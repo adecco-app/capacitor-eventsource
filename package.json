@@ -24,6 +24,12 @@
   "peerDependencies": {
     "@capacitor/core": "^3.0.0"
   },
+  "files": [
+    "dist/",
+    "ios/",
+    "android/",
+    "CapacitorEventsource.podspec"
+  ],
   "keywords": [
     "capacitor",
     "plugin",
