@@ -12,8 +12,11 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
+import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 enum ReadyState {
     CONNECTING,
@@ -31,7 +34,7 @@ public class EventSource extends Plugin implements EventHandler {
     private boolean opened = false;
 
     @PluginMethod
-    public void configure(final PluginCall call) {
+    public void configure(final PluginCall call) throws JSONException {
         final String urlString = call.getString("url");
 
         if (urlString == null) {
@@ -59,7 +62,18 @@ public class EventSource extends Plugin implements EventHandler {
         final int maxReconnectTime = call.getInt("maxReconnectTime", 60000);
         final int backoffResetThreshold = call.getInt("backoffResetThreshold", 5000);
         final int idleTimeout = call.getInt("idleTimeout", 30000);
+        final JSObject headers = call.getObject("headers", new JSObject());
+        JSONArray headerNames = headers.names();
+        Headers.Builder builder = new Headers.Builder();
+        if (headerNames.length() > 0) {
+            for (int i = 0; i < headerNames.length(); i++) {
+                String key = headerNames.getString(i);
+                String val = headers.getString(key);
+                builder.add(key, val);
+            }
+        }
 
+        Headers customHeaders = builder.build();
         final Request request = new Request.Builder().url(this.url).build();
         final OkHttpClient client = new OkHttpClient.Builder().readTimeout(idleTimeout, TimeUnit.MILLISECONDS).build();
         try {
@@ -69,6 +83,7 @@ public class EventSource extends Plugin implements EventHandler {
                     .maxReconnectTimeMs(maxReconnectTime)
                     .backoffResetThresholdMs(backoffResetThreshold)
                     .readTimeoutMs(idleTimeout)
+                    .headers(customHeaders)
                     .build();
         } catch (final URISyntaxException e) {
             e.printStackTrace();
@@ -142,7 +157,8 @@ public class EventSource extends Plugin implements EventHandler {
         Log.v(TAG, "onMessage: " + messageEvent.getData());
 
         final JSObject ret = new JSObject();
-        ret.put("message", messageEvent.getData());
+        ret.put("type", event);
+        ret.put("data", messageEvent.getData());
         this.safeNotifyListeners("message", ret);
     }
 

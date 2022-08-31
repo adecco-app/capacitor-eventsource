@@ -48,7 +48,16 @@ public class EventSource: CAPPlugin, LDSwiftEventSource.EventHandler {
         config.maxReconnectTime      = (call.getDouble("maxReconnectTime")      ?? 60000.0) / 1000.0
         config.backoffResetThreshold = (call.getDouble("backoffResetThreshold") ?? 5000.0)  / 1000.0
         config.idleTimeout           = (call.getDouble("idleTimeout")           ?? 30000.0) / 1000.0
+        if let headers = call.getObject("headers") {
+            var configHeaders: [String: String] = [:];
+            for header in headers {
+                let val = "\(header.value)";
+                configHeaders[header.key] = val;
+            }
 
+            config.headers = configHeaders;
+        }
+        
         self.eventSource = LDSwiftEventSource.EventSource.init(config: config)
         call.resolve()
     }
@@ -122,7 +131,7 @@ public class EventSource: CAPPlugin, LDSwiftEventSource.EventHandler {
 
         self.notifyListeners("message", data: [
             "type": eventType,
-            "message": messageEvent.data as Any
+            "data": messageEvent.data as Any
         ], retainUntilConsumed: false)
     }
 
