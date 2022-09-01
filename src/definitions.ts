@@ -6,6 +6,7 @@ export interface EventSourceOptions {
   maxReconnectTime?: number;
   backoffResetThreshold?: number;
   idleTimeout?: number;
+  headers?: { [name: string]: string };
 }
 
 export interface OpenResult {
@@ -13,7 +14,8 @@ export interface OpenResult {
 }
 
 export interface MessageResult {
-  message?: string;
+  type?: string;
+  data?: string;
 }
 
 export interface ErrorResult {
