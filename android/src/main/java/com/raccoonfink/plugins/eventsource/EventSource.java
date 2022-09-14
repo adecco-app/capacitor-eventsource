@@ -11,6 +11,7 @@ import com.launchdarkly.eventsource.MessageEvent;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import okhttp3.Headers;
 import okhttp3.OkHttpClient;
@@ -58,10 +59,11 @@ public class EventSource extends Plugin implements EventHandler {
             this.sse = null;
         }
 
-        final int reconnectTime = call.getInt("reconnectTime", 1000);
-        final int maxReconnectTime = call.getInt("maxReconnectTime", 60000);
-        final int backoffResetThreshold = call.getInt("backoffResetThreshold", 5000);
+        final Duration reconnectTime = Duration.ofMillis(call.getInt("reconnectTime", 1000));
+        final Duration maxReconnectTime = Duration.ofMillis(call.getInt("maxReconnectTime", 60000));
+        final Duration backoffResetThreshold = Duration.ofMillis(call.getInt("backoffResetThreshold", 5000));
         final int idleTimeout = call.getInt("idleTimeout", 30000);
+        final String lastEventId = call.getString("lastEventId", "timestamp");
         final JSObject headers = call.getObject("headers", new JSObject());
         JSONArray headerNames = headers.names();
         Headers.Builder builder = new Headers.Builder();
@@ -79,11 +81,12 @@ public class EventSource extends Plugin implements EventHandler {
         try {
             this.sse =
                 new com.launchdarkly.eventsource.EventSource.Builder(this, this.url.toURI())
-                    .reconnectTimeMs(reconnectTime)
-                    .maxReconnectTimeMs(maxReconnectTime)
-                    .backoffResetThresholdMs(backoffResetThreshold)
-                    .readTimeoutMs(idleTimeout)
+                    .reconnectTime(reconnectTime)
+                    .maxReconnectTime(maxReconnectTime)
+                    .backoffResetThreshold(backoffResetThreshold)
+                    .readTimeout(Duration.ofMillis(idleTimeout))
                     .headers(customHeaders)
+                    .lastEventId(lastEventId)
                     .build();
         } catch (final URISyntaxException e) {
             e.printStackTrace();

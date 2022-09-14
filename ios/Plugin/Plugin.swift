@@ -44,10 +44,11 @@ public class EventSource: CAPPlugin, LDSwiftEventSource.EventHandler {
         }
         var config = LDSwiftEventSource.EventSource.Config(handler: self, url: serverURL)
 
-        config.reconnectTime         = (call.getDouble("reconnectTime")         ?? 1000.0)  / 1000.0
+        config.reconnectTime         = (call.getDouble("reconnectTime")         ?? 10000.0)  / 1000.0
         config.maxReconnectTime      = (call.getDouble("maxReconnectTime")      ?? 60000.0) / 1000.0
-        config.backoffResetThreshold = (call.getDouble("backoffResetThreshold") ?? 5000.0)  / 1000.0
+        config.backoffResetThreshold = (call.getDouble("backoffResetThreshold") ?? 10000.0)  / 1000.0
         config.idleTimeout           = (call.getDouble("idleTimeout")           ?? 30000.0) / 1000.0
+        config.lastEventId           = (call.getString("lastEventId")           ?? "timestamp")
         if let headers = call.getObject("headers") {
             var configHeaders: [String: String] = [:];
             for header in headers {
