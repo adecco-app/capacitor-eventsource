@@ -50,7 +50,7 @@ repositories {
 
 dependencies {
     // implementation "com.squareup.okhttp3:okhttp:4.9.1"
-    implementation "com.launchdarkly:okhttp-eventsource:1.11.2"
+    implementation "com.launchdarkly:okhttp-eventsource:2.7.1"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':capacitor-android')
     implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"

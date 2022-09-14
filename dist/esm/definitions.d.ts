@@ -5,6 +5,7 @@ export interface EventSourceOptions {
     maxReconnectTime?: number;
     backoffResetThreshold?: number;
     idleTimeout?: number;
+    lastEventId?: string;
     headers?: {
         [name: string]: string;
     };
