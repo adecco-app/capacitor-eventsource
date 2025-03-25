@@ -39,11 +39,11 @@ export interface EventSourcePlugin {
   close(): Promise<void>;
 
   removeAllListeners(): void;
-  addListener(eventName: 'open', listenerFunc: (result: OpenResult) => void): PluginListenerHandle;
-  addListener(eventName: 'message', listenerFunc: (result: MessageResult) => void): PluginListenerHandle;
-  addListener(eventName: 'error', listenerFunc: (result: ErrorResult) => void): PluginListenerHandle;
+  addListener(eventName: 'open', listenerFunc: (result: OpenResult) => void): Promise<PluginListenerHandle>;
+  addListener(eventName: 'message', listenerFunc: (result: MessageResult) => void): Promise<PluginListenerHandle>;
+  addListener(eventName: 'error', listenerFunc: (result: ErrorResult) => void): Promise<PluginListenerHandle>;
   addListener(
     eventName: 'readyStateChanged',
     listenerFunc: (result: ReadyStateChangedResult) => void
-  ): PluginListenerHandle;
+  ): Promise<PluginListenerHandle>;
 }
