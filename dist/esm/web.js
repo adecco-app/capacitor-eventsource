@@ -2,10 +2,7 @@ import { WebPlugin } from '@capacitor/core';
 import { READY_STATE } from './definitions';
 export class EventSourceWeb extends WebPlugin {
     constructor() {
-        super({
-            name: 'EventSource',
-            platforms: ['web'],
-        });
+        super(...arguments);
         this.opened = false;
     }
     async configure(options) {
@@ -60,6 +57,4 @@ export class EventSourceWeb extends WebPlugin {
 }
 const EventSourcePluginImpl = new EventSourceWeb();
 export { EventSourcePluginImpl as EventSource };
-import { registerWebPlugin } from '@capacitor/core';
-registerWebPlugin(EventSourcePluginImpl);
 //# sourceMappingURL=web.js.map

@@ -4,7 +4,6 @@ export declare class EventSourceWeb extends WebPlugin implements EventSourcePlug
     private url?;
     private eventSource?;
     private opened;
-    constructor();
     configure(options: EventSourceOptions): Promise<void>;
     open(): Promise<void>;
     onError(ev: any): void;

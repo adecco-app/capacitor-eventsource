@@ -14,10 +14,7 @@ var capacitorEventSource = (function (exports, core) {
 
     class EventSourceWeb extends core.WebPlugin {
         constructor() {
-            super({
-                name: 'EventSource',
-                platforms: ['web'],
-            });
+            super(...arguments);
             this.opened = false;
         }
         async configure(options) {
@@ -70,18 +67,14 @@ var capacitorEventSource = (function (exports, core) {
             }
         }
     }
-    const EventSourcePluginImpl = new EventSourceWeb();
-    core.registerWebPlugin(EventSourcePluginImpl);
+    new EventSourceWeb();
 
     var web = /*#__PURE__*/Object.freeze({
         __proto__: null,
-        EventSourceWeb: EventSourceWeb,
-        EventSource: EventSourcePluginImpl
+        EventSourceWeb: EventSourceWeb
     });
 
     exports.EventSource = EventSource;
-
-    Object.defineProperty(exports, '__esModule', { value: true });
 
     return exports;
 

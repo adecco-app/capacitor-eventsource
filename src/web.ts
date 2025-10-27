@@ -6,13 +6,6 @@ export class EventSourceWeb extends WebPlugin implements EventSourcePlugin {
   private eventSource?: EventSource | null;
   private opened = false;
 
-  constructor() {
-    super({
-      name: 'EventSource',
-      platforms: ['web'],
-    });
-  }
-
   async configure(options: EventSourceOptions): Promise<void> {
     console.debug(`EventSourceWeb.configure(${options.url})`);
     if (options.url) {
@@ -73,6 +66,3 @@ export class EventSourceWeb extends WebPlugin implements EventSourcePlugin {
 const EventSourcePluginImpl = new EventSourceWeb();
 
 export { EventSourcePluginImpl as EventSource };
-
-import { registerWebPlugin } from '@capacitor/core';
-registerWebPlugin(EventSourcePluginImpl);

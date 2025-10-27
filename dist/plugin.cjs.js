@@ -1,7 +1,5 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 var core = require('@capacitor/core');
 
 exports.READY_STATE = void 0;
@@ -17,10 +15,7 @@ const EventSource = core.registerPlugin('EventSource', {
 
 class EventSourceWeb extends core.WebPlugin {
     constructor() {
-        super({
-            name: 'EventSource',
-            platforms: ['web'],
-        });
+        super(...arguments);
         this.opened = false;
     }
     async configure(options) {
@@ -73,13 +68,11 @@ class EventSourceWeb extends core.WebPlugin {
         }
     }
 }
-const EventSourcePluginImpl = new EventSourceWeb();
-core.registerWebPlugin(EventSourcePluginImpl);
+new EventSourceWeb();
 
 var web = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    EventSourceWeb: EventSourceWeb,
-    EventSource: EventSourcePluginImpl
+    EventSourceWeb: EventSourceWeb
 });
 
 exports.EventSource = EventSource;
